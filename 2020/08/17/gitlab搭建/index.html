@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="day"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>gitlab搭建 | 流星飒沓</title><meta name="description" content="gitlab使用配置  按照官网安装 （安装完成后，组件无法启动，可能是缺少一些基础库依赖，需要注意）   1. 配置文件 1&#x2F;etc&#x2F;gitlab&#x2F;gitlab.rb  配置url  1external_url &#39;http:&#x2F;&#x2F;gitlab.xxxxx.com&#39; 然后gitlab-ctl reconfigure 再重启 gitl"><meta name="keywords" content="gitlab"><meta name="author" content="liuxingsata"><meta name="copyright" content="liuxingsata"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon-3.ico"><link rel="canonical" href="http://liuxingsata.github.io/2020/08/17/gitlab%E6%90%AD%E5%BB%BA/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><meta property="og:type" content="article"><meta property="og:title" content="gitlab搭建"><meta property="og:url" content="http://liuxingsata.github.io/2020/08/17/gitlab%E6%90%AD%E5%BB%BA/"><meta property="og:site_name" content="流星飒沓"><meta property="og:description" content="gitlab使用配置  按照官网安装 （安装完成后，组件无法启动，可能是缺少一些基础库依赖，需要注意）   1. 配置文件 1&#x2F;etc&#x2F;gitlab&#x2F;gitlab.rb  配置url  1external_url &#39;http:&#x2F;&#x2F;gitlab.xxxxx.com&#39; 然后gitlab-ctl reconfigure 再重启 gitl"><meta property="og:image" content="https://i.loli.net/2019/09/25/91bemczU5kNVsLa.png"><meta property="article:published_time" content="2020-08-17T06:27:56.022Z"><meta property="article:modified_time" content="2020-08-17T06:27:56.022Z"><meta name="twitter:card" content="summary"><link rel="manifest" href="/img/pwa/manifest.json"/><meta name="theme-color" content="#fff"/><meta name="msapplication-TileColor" content="#fff"/><link rel="apple-touch-icon" sizes="180x180" href="/img/pwa/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/img/pwa/32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/img/pwa/16.png"/><link rel="mask-icon" href="/img/pwa/safari-pinned-tab.svg" color="#5bbad5"/><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-148187128-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-148187128-1');
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.0.2',
+  algolia: {"appId":"EP6RX4AM95","apiKey":"dad961196cf79c5a909c48cae61d29b3","indexName":"liuxingsata","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: {"text":"I,LOVE,YOU","fontSize":"15px"},
+  medium_zoom: ,
+  fancybox: ,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: [object Object],
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: ,
+  islazyload: true,
+  isanchor:     
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-08-17 06:27:56'
+}</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 5.0.2"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">12</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-list"></i><span> list</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> 电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fa fa-book"></i><span> 读书</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-list-alt"></i><span> 留言板</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gitlab%E4%BD%BF%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text"> gitlab使用配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text"> 1. 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text"> </span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2019/09/25/91bemczU5kNVsLa.png)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">流星飒沓</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fa fa-list"></i><span> list</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> 电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fa fa-book"></i><span> 读书</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-list-alt"></i><span> 留言板</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">gitlab搭建</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-17T06:27:56.022Z" title="发表于 2020-08-17 06:27:56">2020-08-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-08-17T06:27:56.022Z" title="更新于 2020-08-17 06:27:56">2020-08-17</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h2 id="gitlab使用配置"><a class="markdownIt-Anchor" href="#gitlab使用配置"></a> gitlab使用配置</h2>
+<blockquote>
+<p>按照<a target="_blank" rel="noopener" href="https://about.gitlab.com/installation/">官网</a>安装 （安装完成后，组件无法启动，可能是缺少一些基础库依赖，需要注意）</p>
+</blockquote>
+<h3 id="1-配置文件"><a class="markdownIt-Anchor" href="#1-配置文件"></a> 1. 配置文件</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;gitlab&#x2F;gitlab.rb</span><br></pre></td></tr></table></figure>
+<ol>
+<li>配置url</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">external_url &#39;http:&#x2F;&#x2F;gitlab.xxxxx.com&#39;</span><br></pre></td></tr></table></figure>
+<p>然后gitlab-ctl reconfigure<br />
+再重启 gitlab-ctl restart<br />
+单机版就可用了<br />
+2. 常用命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl status    查看状态</span><br><span class="line">gitlab-ctl start （可单独启动）</span><br><span class="line">gitlab-ctl stop</span><br><span class="line">gitlab-ctl restart</span><br><span class="line">gitlab-ctl tail 查看日志（可单独查看对应组件日志）</span><br><span class="line"></span><br><span class="line">gitlab-ctl reconfigure </span><br><span class="line">gitlab-ctl show-config        验证配置文件</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>配置目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;git-data&#x2F;repositories&#x2F;：库默认存储目录</span><br><span class="line">&#x2F;opt&#x2F;gitlab：            应用代码和相应的依赖程序</span><br><span class="line">&#x2F;var&#x2F;opt&#x2F;gitlab：gitlab-ctl reconfigure命令编译后的应用数据和配置文件，不需要人为修改配置</span><br><span class="line">&#x2F;etc&#x2F;gitlab：    配置文件目录</span><br><span class="line">&#x2F;var&#x2F;log&#x2F;gitlab：此目录下存放了gitlab各个组件产生的日志</span><br><span class="line">&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;backups&#x2F;：备份文件生成的目录</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>其他配置<br />
+邮件配置</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">gitlab_rails[&#39;gitlab_email_enabled&#39;] &#x3D; true</span><br><span class="line">gitlab_rails[&#39;gitlab_email_from&#39;] &#x3D; &#39;xxxx@163.com&#39;</span><br><span class="line">gitlab_rails[&#39;smtp_enable&#39;] &#x3D; true</span><br><span class="line">gitlab_rails[&#39;smtp_address&#39;] &#x3D; &quot;smtp.163.com&quot;</span><br><span class="line">gitlab_rails[&#39;smtp_port&#39;] &#x3D; 25</span><br><span class="line">gitlab_rails[&#39;smtp_user_name&#39;] &#x3D; &quot;xxxx@163.com&quot;</span><br><span class="line">gitlab_rails[&#39;smtp_password&#39;] &#x3D; &quot;xxxxxxxx&quot;</span><br><span class="line">gitlab_rails[&#39;smtp_domain&#39;] &#x3D; &quot;163.com&quot;</span><br><span class="line">gitlab_rails[&#39;smtp_authentication&#39;] &#x3D; &quot;login&quot;</span><br><span class="line">gitlab_rails[&#39;smtp_enable_starttls_auto&#39;] &#x3D; true</span><br><span class="line">gitlab_rails[&#39;smtp_tls&#39;] &#x3D; false</span><br></pre></td></tr></table></figure>
+<p>ldap配置(注意yaml语法)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">gitlab_rails[&#39;ldap_enabled&#39;] &#x3D; true</span><br><span class="line"></span><br><span class="line"> gitlab_rails[&#39;ldap_servers&#39;] &#x3D; YAML.load &lt;&lt;-&#39;EOS&#39;</span><br><span class="line">   main: # &#39;main&#39; is the GitLab &#39;provider ID&#39; of this LDAP server</span><br><span class="line">     label: &#39;ldap&#39;</span><br><span class="line">     host: &#39;host&#39;</span><br><span class="line">     port: 8989</span><br><span class="line">     uid: &#39;uid&#39;</span><br><span class="line">     bind_dn: &#39;dc&#x3D;xxxx,dc&#x3D;com&#39;</span><br><span class="line">     password: &#39;xxxx&#39;</span><br><span class="line">     encryption: &#39;plain&#39; # &quot;start_tls&quot; or &quot;simple_tls&quot; or &quot;plain&quot;</span><br><span class="line">     verify_certificates: true</span><br><span class="line">     active_directory: true</span><br><span class="line">     allow_username_or_email_login: false</span><br><span class="line">     lowercase_usernames: false</span><br><span class="line">     block_auto_created_users: false</span><br><span class="line">     base: &#39;dc&#x3D;huajiao,dc&#x3D;com&#39;</span><br><span class="line">     user_filter: &#39;&#39;</span><br><span class="line">     ## EE only</span><br><span class="line">     group_base: &#39;dc&#x3D;xxxx,dc&#x3D;com&#39;</span><br><span class="line">     admin_group: &#39;&#39;</span><br><span class="line">     sync_ssh_keys: false</span><br><span class="line">EOS</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>包含组件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">nginx：静态Web服务器</span><br><span class="line">gitlab-shell：用于处理Git命令</span><br><span class="line">gitlab-workhorse:轻量级的反向代理服务器</span><br><span class="line">logrotate：日志文件管理工具</span><br><span class="line">postgresql：数据库&#x2F;可支持mysql</span><br><span class="line">redis：缓存数据库</span><br><span class="line">sidekiq：用于在后台执行队列任务（异步执行）</span><br><span class="line">unicorn：GitLab Rails应用是托管在这个服务器上面的。</span><br><span class="line">以下是监控相关组件</span><br><span class="line">gitlab-monitor</span><br><span class="line">alertmanager</span><br><span class="line">node-exporter</span><br><span class="line">prometheus</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>gitlab架构<br />
+<img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="http://image.huajiao.com/e949da825038357489b0d31f7923ba9c.jpg" alt="image" /></li>
+<li>安装gitlab-ci</li>
+</ol>
+<blockquote>
+<p>安装文档参考：<a target="_blank" rel="noopener" href="http://docs.gitlab.com/runner/register/index.html">http://docs.gitlab.com/runner/register/index.html</a></p>
+</blockquote>
+<ol start="8">
+<li>
+<p><a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/administration/high_availability/README.html">分布式部署方案</a></p>
+<ol>
+<li>原本repositories是存放在磁盘上的, 可使用NFS</li>
+</ol>
+<ul>
+<li>Unicorn / Workhorse - Web请求（UI，API，Git over HTTP）</li>
+<li>Sidekiq - 异步/后台作业</li>
+<li>PostgreSQL - 数据库(可以换mysql)
+<ul>
+<li>Consul - 数据库服务发现和运行状况检查/故障转移</li>
+<li>PGBouncer - 数据库池管理器</li>
+</ul>
+</li>
+<li>Redis - 键/值存储（用户会话，缓存，Sidekiq队列）
+<ul>
+<li>Sentinel - Redis运行状况检查/故障转移管理器</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">postgresql[&#39;enable&#39;]&#x3D; false</span><br><span class="line">gitlab_rails[&#39;db_adapter&#39;] &#x3D; &quot;mysql2&quot;</span><br><span class="line">gitlab_rails[&#39;db_encoding&#39;] &#x3D; &quot;utf8&quot;</span><br><span class="line">gitlab_rails[&#39;db_collation&#39;] &#x3D; nil</span><br><span class="line">gitlab_rails[&#39;db_database&#39;] &#x3D; &quot;gitlab_test&quot;</span><br><span class="line">gitlab_rails[&#39;db_pool&#39;] &#x3D; 10</span><br><span class="line">gitlab_rails[&#39;db_username&#39;] &#x3D; &quot;gitlab_test&quot;</span><br><span class="line">gitlab_rails[&#39;db_password&#39;] &#x3D; &quot;Huajiao#1234&quot;</span><br><span class="line">gitlab_rails[&#39;db_host&#39;] &#x3D; &quot;10.10.10.10&quot;</span><br><span class="line">gitlab_rails[&#39;db_port&#39;] &#x3D; 3306</span><br><span class="line">gitlab_rails[&#39;db_socket&#39;] &#x3D; nil</span><br><span class="line">gitlab_rails[&#39;db_sslmode&#39;] &#x3D; nil</span><br><span class="line">gitlab_rails[&#39;db_sslcompression&#39;] &#x3D; 0</span><br><span class="line">gitlab_rails[&#39;db_sslrootcert&#39;] &#x3D; nil</span><br><span class="line">gitlab_rails[&#39;db_prepared_statements&#39;] &#x3D; false</span><br><span class="line">gitlab_rails[&#39;db_statements_limit&#39;] &#x3D; 1000</span><br></pre></td></tr></table></figure>
+<h3 id=""><a class="markdownIt-Anchor" href="#"></a> </h3>
+<ol>
+<li>502
+<ol>
+<li>服务是否都启动了 gitlab-ctl status</li>
+<li>如果down gitlab-ctl tail 查看日志</li>
+<li>如果服务器不只有gitlab一种服务，查看端口占用，unicorn是8080端口</li>
+<li>确认权限问题（基本上都是这个问题，只是具体出现权限问题的地方还需根据日志追踪，有些更诡异的是日志没有写入权限，啥也看不到。。。），connect() to unix:/var/opt/gitlab/gitlab-workhorse/socket failed (111: Connection refused) ，看下是否存在有该文件，以及文件和目录权限</li>
+</ol>
+</li>
+</ol>
+<p>root密码重置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@321 bin]# gitlab-rails console production</span><br><span class="line">Loading production environment (Rails 4.2.5.2)</span><br><span class="line">irb(main):001:0&gt; user &#x3D; User.where(id: 1).first</span><br><span class="line">&#x3D;&gt; #&lt;User id: 1, email: &quot;admin@example.com&quot;, ...</span><br><span class="line">irb(main):002:0&gt; user.password&#x3D;12345678</span><br><span class="line">&#x3D;&gt; 12345678</span><br><span class="line">irb(main):003:0&gt; user.password_confirmation&#x3D;12345678</span><br><span class="line">&#x3D;&gt; 12345678</span><br><span class="line">irb(main):004:0&gt; user.save!</span><br><span class="line">&#x3D;&gt; true</span><br><span class="line">irb(main):005:0&gt; quit</span><br></pre></td></tr></table></figure>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">liuxingsata</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://liuxingsata.github.io/2020/08/17/gitlab%E6%90%AD%E5%BB%BA/">http://liuxingsata.github.io/2020/08/17/gitlab%E6%90%AD%E5%BB%BA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liuxingsata.github.io" target="_blank">流星飒沓</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/gitlab/">gitlab</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2019/09/25/91bemczU5kNVsLa.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2020/08/17/ffmepg%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><img class="prev-cover" data-lazy-src="https://i.loli.net/2019/10/08/2NLuVCBzv1J6dGW.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">ffmpeg的常用命令</div></div></a></div></nav></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 By liuxingsata</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon_piao" mobile="undefined" src="/js/third-party/piao.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="undefined" src="/js/third-party/canvas-nest.js"></script><script src="/js/third-party/ClickShowText.js" async="async"></script></div></body></html>
